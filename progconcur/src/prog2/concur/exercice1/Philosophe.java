@@ -42,15 +42,16 @@ public class Philosophe implements Runnable
 
     public void run()
     {
-        while(true)
-        {
+    		while(true)
+    	{
             penser();
             fGauche.prendre();
             fDroite.prendre();
             manger();
             fDroite.relacher();
             fGauche.relacher();
-        }
+           
+    	}
     }
 
     final void manger() 
