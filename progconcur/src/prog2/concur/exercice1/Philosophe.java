@@ -3,7 +3,7 @@ package prog2.concur.exercice1;
 class Fourchette
 {
     private boolean prise = false;
-
+//
     final synchronized void prendre() 
     {
         try 

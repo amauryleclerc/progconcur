@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public abstract class AbstractFileBloquanteBornee<E>
 {
-
+//
     E[] tableau;
     int tete;
     int queue;
