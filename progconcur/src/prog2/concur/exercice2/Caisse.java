@@ -6,7 +6,7 @@ public class Caisse
 	
     public static void main(String args[])
     {
-    	FileBloquanteBorneeBasNiveau<String> tapisRoulant = new FileBloquanteBorneeBasNiveau<String>(5);
+    	FileBloquanteBorneeBasNiveau<String> tapisRoulant = new FileBloquanteBorneeBasNiveau<String>(10);
     	
        Caissiere caissiere = new Caissiere(tapisRoulant);
        Client client = new Client(tapisRoulant);
@@ -27,13 +27,15 @@ public class Caisse
 		
 	}
 	void scannerArticle(){
+		String article = null;
 		try {
-			String article = this.tapisRoulant.prendre();
+			article = this.tapisRoulant.prendre();
+			System.out.println("caissiere scanne "+article);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("caissiere scanne article");
+		
 	}
 	
 }
@@ -53,12 +55,13 @@ public class Caisse
 	void deposerArticle(){
 		try {
 			
-			this.tapisRoulant.deposer("banane");
-			System.out.println("client depose article");
+			this.tapisRoulant.deposer("article");
+
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("client depose article");
 	}
 	
 }

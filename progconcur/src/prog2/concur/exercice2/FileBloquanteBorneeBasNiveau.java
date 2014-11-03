@@ -14,15 +14,16 @@ public  class FileBloquanteBorneeBasNiveau<E> extends AbstractFileBloquanteBorne
 	}
 
 	@Override
-	public void deposer(E e) throws InterruptedException {
+	public synchronized void deposer(E e) throws InterruptedException {
 		// TODO Auto-generated method stub
 		if(this.estPleine){
 			wait();
-		}else{
+		}
+		
 			this.tableau[this.queue] = e;
 			this.queue ++;
 			this.estVide = false;
-		}
+		
 	
 		if(this.queue == this.tableau.length){
 			this.queue = 0;
@@ -34,15 +35,17 @@ public  class FileBloquanteBorneeBasNiveau<E> extends AbstractFileBloquanteBorne
 	}
 
 	@Override
-	public E prendre() throws InterruptedException {
-		E e = null;
+	public synchronized E prendre() throws InterruptedException {
+		E e = null ;
 		if(this.estVide){
 			wait();
-		}else{
+			
+		}
 			e =this.tableau[this.tete];
 			this.tete++;
 			this.estPleine = false;
-		}
+		
+		
 		if(this.tete == this.tableau.length){
 			this.tete = 0;
 		}
