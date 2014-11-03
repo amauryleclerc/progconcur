@@ -1,4 +1,4 @@
-package prog2.concur.exercice2.v1;
+package prog2.concur.exercice2.basNiveau.v1;
 
 import java.util.ArrayList;
 

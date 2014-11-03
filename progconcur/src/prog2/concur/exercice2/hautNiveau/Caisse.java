@@ -1,4 +1,5 @@
-package prog2.concur.exercice2.v1;
+package prog2.concur.exercice2.hautNiveau;
+
 
 
 public class Caisse
@@ -6,7 +7,7 @@ public class Caisse
 	
     public static void main(String args[])
     {
-    	FileBloquanteBorneeBasNiveau<String> tapisRoulant = new FileBloquanteBorneeBasNiveau<String>(10);
+    	FileBloquanteBorneeHautNiveau<String> tapisRoulant = new FileBloquanteBorneeHautNiveau<String>(10);
     	
        Caissiere caissiere = new Caissiere(tapisRoulant);
        Client client = new Client(tapisRoulant);
@@ -15,8 +16,8 @@ public class Caisse
     }
 }
  class Caissiere implements Runnable{
-	 FileBloquanteBorneeBasNiveau<String> tapisRoulant;
-	public Caissiere(FileBloquanteBorneeBasNiveau<String> tapisRoulant) {
+	 FileBloquanteBorneeHautNiveau<String> tapisRoulant;
+	public Caissiere(FileBloquanteBorneeHautNiveau<String> tapisRoulant) {
 		this.tapisRoulant = tapisRoulant;
 	}
 	@Override
@@ -40,9 +41,9 @@ public class Caisse
 	
 }
  class Client implements Runnable{
-	 FileBloquanteBorneeBasNiveau<String> tapisRoulant;
+	 FileBloquanteBorneeHautNiveau<String> tapisRoulant;
 
-	public Client(FileBloquanteBorneeBasNiveau<String> tapisRoulant) {
+	public Client(FileBloquanteBorneeHautNiveau<String> tapisRoulant) {
 		this.tapisRoulant = tapisRoulant;
 	}
 	@Override
