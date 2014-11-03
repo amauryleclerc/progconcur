@@ -10,6 +10,7 @@ class Fourchette
         {
             while (prise) 
             {
+            	
                 wait();
             }
         } 
@@ -25,6 +26,20 @@ class Fourchette
     {
         prise = false;
         notifyAll();
+    }
+    public boolean estPrise(){
+    	return this.prise;
+    }
+    public boolean essayerPrendre(){
+   
+             if (prise) {
+                 return false;
+             }else{
+                 prise = true;
+                 return true;
+             }
+        
+    	
     }
 }
 
@@ -44,9 +59,20 @@ public class Philosophe implements Runnable
     {
     		while(true)
     	{
-            penser();
-            fGauche.prendre();
+    		/*	while(fDroite.estPrise() || fGauche.estPrise())	{
+    				
+    	            penser();
+    			}
+*/
+    			 penser();
+    		
             fDroite.prendre();
+            while(! fGauche.essayerPrendre()){
+            	 fDroite.relacher();
+            	 fDroite.prendre();
+            }
+ 
+    
             manger();
             fDroite.relacher();
             fGauche.relacher();
@@ -61,7 +87,7 @@ public class Philosophe implements Runnable
 
     final void penser() 
     {
-        System.out.println(nom + " pense.");
+      //  System.out.println(nom + " pense.");
     }
 
     public static void main(String args[])
