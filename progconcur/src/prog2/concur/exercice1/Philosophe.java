@@ -59,13 +59,8 @@ public class Philosophe implements Runnable
     {
     		while(true)
     	{
-    		/*	while(fDroite.estPrise() || fGauche.estPrise())	{
-    				
-    	            penser();
-    			}
-*/
-    			 penser();
-    		
+
+    		penser();
             fDroite.prendre();
             while(! fGauche.essayerPrendre()){
             	 fDroite.relacher();
@@ -87,7 +82,7 @@ public class Philosophe implements Runnable
 
     final void penser() 
     {
-      //  System.out.println(nom + " pense.");
+        System.out.println(nom + " pense.");
     }
 
     public static void main(String args[])
