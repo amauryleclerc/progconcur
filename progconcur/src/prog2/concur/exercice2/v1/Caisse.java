@@ -1,4 +1,4 @@
-package prog2.concur.exercice2;
+package prog2.concur.exercice2.v1;
 
 
 public class Caisse

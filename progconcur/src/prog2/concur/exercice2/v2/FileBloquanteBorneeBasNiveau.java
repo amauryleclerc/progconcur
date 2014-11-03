@@ -1,8 +1,9 @@
-package prog2.concur.exercice2;
+package prog2.concur.exercice2.v2;
 
 import java.util.ArrayList;
 
 import org.w3c.dom.views.AbstractView;
+
 
 
 public  class FileBloquanteBorneeBasNiveau<E> extends AbstractFileBloquanteBornee<E>
@@ -14,8 +15,8 @@ public  class FileBloquanteBorneeBasNiveau<E> extends AbstractFileBloquanteBorne
 	}
 
 	@Override
-	public synchronized void deposer(E e) throws InterruptedException {
-		// TODO Auto-generated method stub
+	public  void deposer(E e) throws InterruptedException {
+		synchronized(this) {
 		if(this.estPleine){
 			wait();
 		}
@@ -32,10 +33,12 @@ public  class FileBloquanteBorneeBasNiveau<E> extends AbstractFileBloquanteBorne
 			this.estPleine = true;
 		}
 		notify();
+		}
 	}
 
 	@Override
-	public synchronized E prendre() throws InterruptedException {
+	public  E prendre() throws InterruptedException {
+		synchronized(this) {
 		E e = null ;
 		if(this.estVide){
 			wait();
@@ -54,6 +57,7 @@ public  class FileBloquanteBorneeBasNiveau<E> extends AbstractFileBloquanteBorne
 		}
 		notify();
 		return e;
+	}
 	}
 
 }
