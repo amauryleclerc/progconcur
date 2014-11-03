@@ -6,63 +6,62 @@ public class Caisse
 	
     public static void main(String args[])
     {
-    	FileBloquanteBorneeBasNiveau<String> tapisRoulant = new FileBloquanteBorneeBasNiveau<String>(10);
+    	FileBloquanteBorneeBasNiveau<String> tapisRoulant = new FileBloquanteBorneeBasNiveau<String>(2);
     	
        Caissiere caissiere = new Caissiere(tapisRoulant);
        Client client = new Client(tapisRoulant);
                new Thread(caissiere).start();
                new Thread(client).start();
+
     }
 }
- class Caissiere implements Runnable{
-	 FileBloquanteBorneeBasNiveau<String> tapisRoulant;
+ class Caissiere extends AbstractCaissiere implements Runnable{
+
 	public Caissiere(FileBloquanteBorneeBasNiveau<String> tapisRoulant) {
-		this.tapisRoulant = tapisRoulant;
+		super(tapisRoulant);
+	
 	}
+
 	@Override
 	public void run() {
 		while(true){
-			scannerArticle();
-		}
-		
-	}
-	void scannerArticle(){
-		String article = null;
-		try {
-			article = this.tapisRoulant.prendre();
-			System.out.println("caissiere scanne "+article);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				this.scannerArticle();
+				System.out.println("caissiere scanner article");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
 	
+		
+	
+	
 }
- class Client implements Runnable{
-	 FileBloquanteBorneeBasNiveau<String> tapisRoulant;
-
-	public Client(FileBloquanteBorneeBasNiveau<String> tapisRoulant) {
-		this.tapisRoulant = tapisRoulant;
+ class Client extends AbstractClient implements Runnable{
+	 public Client(FileBloquanteBorneeBasNiveau<String> tapisRoulant) {
+		super(tapisRoulant);
+		// TODO Auto-generated constructor stub
 	}
+	
+
+	
 	@Override
 	public void run() {
 	while(true){
-		deposerArticle();
-		}
-		
-	}
-	void deposerArticle(){
 		try {
-			
-			this.tapisRoulant.deposer("article");
-
+			this.deposerArticle("article");
+			System.out.println("client depose article");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("client depose article");
+		}
+		
 	}
+	
 	
 }
 
