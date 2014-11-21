@@ -28,6 +28,7 @@
 package prog2.concur.exercice3;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
@@ -37,6 +38,9 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.security.KeyStore;
 import java.util.Locale;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.HttpConnectionFactory;
@@ -75,19 +79,24 @@ import javax.net.ssl.SSLServerSocketFactory;
  * Basic, yet fully functional and spec compliant, HTTP/1.1 file server.
  */
 public class ElementalHttpServerHautNiveau {
+	  
 
     public static void main(String[] args) throws Exception {
-        if (args.length < 1) {
-            System.err.println("Please specify document root directory");
-            System.exit(1);
-        }
-        // Document root directory
-        String docRoot = args[0];
-        int port = 8080;
-        if (args.length >= 2) {
-            port = Integer.parseInt(args[1]);
-        }
+		Properties properties = new Properties();
+		FileReader fr = new FileReader(System.getProperty("user.dir")+"/properties.conf");
+		try {
+			properties.load(fr);
+		} finally {
+			fr.close();
+		}
+		String docRoot  = properties.getProperty("RootDirectory");
+		int port = Integer.parseInt(properties.getProperty("Port"));
+		int nbThreads = Integer.parseInt(properties.getProperty("NbThreads"));
+		System.out.println(docRoot+port);
 
+		ExecutorService   pool = Executors.newFixedThreadPool(nbThreads);
+        
+        
         // Set up the HTTP protocol processor
         HttpProcessor httpproc = HttpProcessorBuilder.create()
                 .add(new ResponseDate())
@@ -122,9 +131,10 @@ public class ElementalHttpServerHautNiveau {
             sf = sslcontext.getServerSocketFactory();
         }
 
-        Thread t = new RequestListenerThread(port, httpService, sf);
+        Thread t = new RequestListenerThread(port, httpService, sf, pool);
         t.setDaemon(false);
-        t.start();
+        pool.execute(t);
+        //t.start();
     }
 
     static class HttpFileHandler implements HttpRequestHandler  {
@@ -189,14 +199,16 @@ public class ElementalHttpServerHautNiveau {
         private final HttpConnectionFactory<DefaultBHttpServerConnection> connFactory;
         private final ServerSocket serversocket;
         private final HttpService httpService;
+        private ExecutorService  pool;
 
         public RequestListenerThread(
                 final int port,
                 final HttpService httpService,
-                final SSLServerSocketFactory sf) throws IOException {
+                final SSLServerSocketFactory sf, ExecutorService  pool) throws IOException {
             this.connFactory = DefaultBHttpServerConnectionFactory.INSTANCE;
             this.serversocket = sf != null ? sf.createServerSocket(port) : new ServerSocket(port);
             this.httpService = httpService;
+            this.pool = pool;
         }
 
         @Override
@@ -212,7 +224,9 @@ public class ElementalHttpServerHautNiveau {
                     // Start worker thread
                     Thread t = new WorkerThread(this.httpService, conn);
                     t.setDaemon(true);
-                    t.start();
+                //    t.start();
+                    pool.execute(t);
+                    
                 } catch (InterruptedIOException ex) {
                     break;
                 } catch (IOException e) {

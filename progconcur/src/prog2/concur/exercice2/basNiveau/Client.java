@@ -1,4 +1,5 @@
-package prog2.concur.exercice2.basNiveau.v2;
+package prog2.concur.exercice2.basNiveau;
+
 
 public  class Client implements Runnable{
 	FileBloquanteBorneeBasNiveau<String> tapisRoulant;
@@ -6,9 +7,7 @@ public  class Client implements Runnable{
 		 this.tapisRoulant = tapisRoulant;
 	 }
 	 public synchronized void deposerArticle(String article) throws InterruptedException{
-		 if(this.tapisRoulant.estPleine){
-			 wait();
-		 }
+		
 		 this.tapisRoulant.deposer(article);
 		 System.out.println("client depose article");
 		 notifyAll();

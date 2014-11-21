@@ -1,4 +1,4 @@
-package prog2.concur.exercice2.basNiveau.v2;
+package prog2.concur.exercice2.basNiveau;
 
 public  class Caissiere implements Runnable{
 	FileBloquanteBorneeBasNiveau<String> tapisRoulant;
@@ -6,9 +6,6 @@ public  class Caissiere implements Runnable{
 		 this.tapisRoulant = tapisRoulant;
 	 }
 	 public synchronized String scannerArticle() throws InterruptedException{
-		 if(this.tapisRoulant.estVide){
-			 wait();
-		 }
 		
 		String article = (String) this.tapisRoulant.prendre();
  
